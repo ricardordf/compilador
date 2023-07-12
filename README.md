@@ -11,8 +11,11 @@ El proceso de generación del compilador requerirá cumplir con ciertos requisit
 Una vez se hayan cumplido estos requisitos, se debe seguir un proceso específico para generar ejecutar el compilador. Para comenzar, será necesario abrir la consola de comandos "msys" y asegurarse de estar ubicado en la ruta correcta donde se encuentran los archivos del compilador.
 
 A continuación, se deben ejecutar las siguientes instrucciones en el orden indicado:
-> bison -d -v gramatica_latino.y        
-> flex -o latino.lex.c lexico_latino.flex 
+
+> bison -d -v gramatica_latino.y
+     
+> flex -o latino.lex.c lexico_latino.flex
+
 > gcc -o COMPILADO gramatica_latino.tab.c latino.lex.c
 
 Durante la ejecución de estos comandos, aparecen mensajes de advertencia (warnings). Estos avisos, aunque no se tomarán en cuenta en este momento, pueden ser útiles durante el desarrollo del compilador para identificar problemas o mejoras en el código.
