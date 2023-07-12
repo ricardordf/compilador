@@ -5,7 +5,7 @@
 - Jorge Díaz-Maroto Merino
 - Carlos Vega González
 
-##Directivas de compilación
+## Directivas de compilación
 
 El proceso de generación del compilador requerirá cumplir con ciertos requisitos previos antes de su ejecución. Es imprescindible contar con la herramienta MinGW instalada en el equipo. Asimismo, será necesario haber instalado el software MARS, una herramienta de simulación y depuración de ensamblador MIPS.
 Una vez se hayan cumplido estos requisitos, se debe seguir un proceso específico para generar ejecutar el compilador. Para comenzar, será necesario abrir la consola de comandos "msys" y asegurarse de estar ubicado en la ruta correcta donde se encuentran los archivos del compilador.
