@@ -1,0 +1,1119 @@
+Grammar
+
+    0 $accept: codigo $end
+
+    1 codigo: sentencias
+
+    2 sentencias: sentencia
+    3           | sentencias sentencia
+
+    4 sentencia: asignacion
+    5          | imprimir
+    6          | condicional_si
+    7          | COMENTARIO
+    8          | bucle_mientras
+
+    9 asignacion: IDENTIFICADOR IGUAL expresion
+
+   10 bucle_mientras: MIENTRAS APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias FIN
+
+   11 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias FIN
+   12               | SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias SINO sentencias FIN
+   13               | SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias osi_encadenados FIN
+
+   14 condicional_osi: OSI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias
+
+   15 osi_encadenados: condicional_osi
+   16                | osi_encadenados condicional_osi
+
+   17 condiciones: condiciones YLOGICO relacionales
+   18            | condiciones OLOGICO relacionales
+   19            | NOLOGICO relacionales
+   20            | relacionales
+
+   21 relacionales: expresion MAYORQUE expresion
+   22             | expresion MAYORIGUALQUE expresion
+   23             | expresion MENORQUE expresion
+   24             | expresion MENORIGUALQUE expresion
+   25             | expresion IGUALQUE expresion
+   26             | APERTURAPARENTESIS relacionales CIERREPARENTESIS
+
+   27 expresion: expresion SUMA operacion
+   28          | expresion RESTA operacion
+   29          | operacion
+
+   30 operacion: operacion MULTIPLICACION tipos
+   31          | operacion DIVISION tipos
+   32          | tipos
+
+   33 tipos: IDENTIFICADOR
+   34      | NUMERICO
+   35      | NUMERICODECIMAL
+   36      | RESTA NUMERICO
+   37      | RESTA NUMERICODECIMAL
+   38      | CADENA
+   39      | APERTURAPARENTESIS expresion CIERREPARENTESIS
+
+   40 imprimir: IMPRIMIR APERTURAPARENTESIS expresion CIERREPARENTESIS
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+COMENTARIO (258) 7
+SUMA (259) 27
+RESTA (260) 28 36 37
+MULTIPLICACION (261) 30
+DIVISION (262) 31
+IGUAL (263) 9
+MAYORQUE (264) 21
+MENORQUE (265) 23
+MAYORIGUALQUE (266) 22
+MENORIGUALQUE (267) 24
+IGUALQUE (268) 25
+YLOGICO (269) 17
+OLOGICO (270) 18
+NOLOGICO (271) 19
+APERTURAPARENTESIS (272) 10 11 12 13 14 26 39 40
+CIERREPARENTESIS (273) 10 11 12 13 14 26 39 40
+SI (274) 11 12 13
+OSI (275) 14
+SINO (276) 12
+MIENTRAS (277) 10
+FIN (278) 10 11 12 13
+IMPRIMIR (279) 40
+NUMERICO (280) 34 36
+NUMERICODECIMAL (281) 35 37
+CADENA (282) 38
+IDENTIFICADOR (283) 9 33
+
+
+Nonterminals, with rules where they appear
+
+$accept (29)
+    on left: 0
+codigo (30)
+    on left: 1, on right: 0
+sentencias (31)
+    on left: 2 3, on right: 1 3 10 11 12 13 14
+sentencia (32)
+    on left: 4 5 6 7 8, on right: 2 3
+asignacion (33)
+    on left: 9, on right: 4
+bucle_mientras (34)
+    on left: 10, on right: 8
+condicional_si (35)
+    on left: 11 12 13, on right: 6
+condicional_osi (36)
+    on left: 14, on right: 15 16
+osi_encadenados (37)
+    on left: 15 16, on right: 13 16
+condiciones (38)
+    on left: 17 18 19 20, on right: 10 11 12 13 14 17 18
+relacionales (39)
+    on left: 21 22 23 24 25 26, on right: 17 18 19 20 26
+expresion (40)
+    on left: 27 28 29, on right: 9 21 22 23 24 25 27 28 39 40
+operacion (41)
+    on left: 30 31 32, on right: 27 28 29 30 31
+tipos (42)
+    on left: 33 34 35 36 37 38 39, on right: 30 31 32
+imprimir (43)
+    on left: 40, on right: 5
+
+
+state 0
+
+    0 $accept: . codigo $end
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    codigo          go to state 6
+    sentencias      go to state 7
+    sentencia       go to state 8
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12
+
+
+state 1
+
+    7 sentencia: COMENTARIO .
+
+    $default  reduce using rule 7 (sentencia)
+
+
+state 2
+
+   11 condicional_si: SI . APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias FIN
+   12               | SI . APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias SINO sentencias FIN
+   13               | SI . APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias osi_encadenados FIN
+
+    APERTURAPARENTESIS  shift, and go to state 13
+
+
+state 3
+
+   10 bucle_mientras: MIENTRAS . APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias FIN
+
+    APERTURAPARENTESIS  shift, and go to state 14
+
+
+state 4
+
+   40 imprimir: IMPRIMIR . APERTURAPARENTESIS expresion CIERREPARENTESIS
+
+    APERTURAPARENTESIS  shift, and go to state 15
+
+
+state 5
+
+    9 asignacion: IDENTIFICADOR . IGUAL expresion
+
+    IGUAL  shift, and go to state 16
+
+
+state 6
+
+    0 $accept: codigo . $end
+
+    $end  shift, and go to state 17
+
+
+state 7
+
+    1 codigo: sentencias .
+    3 sentencias: sentencias . sentencia
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    $default  reduce using rule 1 (codigo)
+
+    sentencia       go to state 18
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12
+
+
+state 8
+
+    2 sentencias: sentencia .
+
+    $default  reduce using rule 2 (sentencias)
+
+
+state 9
+
+    4 sentencia: asignacion .
+
+    $default  reduce using rule 4 (sentencia)
+
+
+state 10
+
+    8 sentencia: bucle_mientras .
+
+    $default  reduce using rule 8 (sentencia)
+
+
+state 11
+
+    6 sentencia: condicional_si .
+
+    $default  reduce using rule 6 (sentencia)
+
+
+state 12
+
+    5 sentencia: imprimir .
+
+    $default  reduce using rule 5 (sentencia)
+
+
+state 13
+
+   11 condicional_si: SI APERTURAPARENTESIS . condiciones CIERREPARENTESIS sentencias FIN
+   12               | SI APERTURAPARENTESIS . condiciones CIERREPARENTESIS sentencias SINO sentencias FIN
+   13               | SI APERTURAPARENTESIS . condiciones CIERREPARENTESIS sentencias osi_encadenados FIN
+
+    RESTA               shift, and go to state 19
+    NOLOGICO            shift, and go to state 20
+    APERTURAPARENTESIS  shift, and go to state 21
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    condiciones   go to state 26
+    relacionales  go to state 27
+    expresion     go to state 28
+    operacion     go to state 29
+    tipos         go to state 30
+
+
+state 14
+
+   10 bucle_mientras: MIENTRAS APERTURAPARENTESIS . condiciones CIERREPARENTESIS sentencias FIN
+
+    RESTA               shift, and go to state 19
+    NOLOGICO            shift, and go to state 20
+    APERTURAPARENTESIS  shift, and go to state 21
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    condiciones   go to state 31
+    relacionales  go to state 27
+    expresion     go to state 28
+    operacion     go to state 29
+    tipos         go to state 30
+
+
+state 15
+
+   40 imprimir: IMPRIMIR APERTURAPARENTESIS . expresion CIERREPARENTESIS
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    expresion  go to state 33
+    operacion  go to state 29
+    tipos      go to state 30
+
+
+state 16
+
+    9 asignacion: IDENTIFICADOR IGUAL . expresion
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    expresion  go to state 34
+    operacion  go to state 29
+    tipos      go to state 30
+
+
+state 17
+
+    0 $accept: codigo $end .
+
+    $default  accept
+
+
+state 18
+
+    3 sentencias: sentencias sentencia .
+
+    $default  reduce using rule 3 (sentencias)
+
+
+state 19
+
+   36 tipos: RESTA . NUMERICO
+   37      | RESTA . NUMERICODECIMAL
+
+    NUMERICO         shift, and go to state 35
+    NUMERICODECIMAL  shift, and go to state 36
+
+
+state 20
+
+   19 condiciones: NOLOGICO . relacionales
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 21
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    relacionales  go to state 37
+    expresion     go to state 28
+    operacion     go to state 29
+    tipos         go to state 30
+
+
+state 21
+
+   26 relacionales: APERTURAPARENTESIS . relacionales CIERREPARENTESIS
+   39 tipos: APERTURAPARENTESIS . expresion CIERREPARENTESIS
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 21
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    relacionales  go to state 38
+    expresion     go to state 39
+    operacion     go to state 29
+    tipos         go to state 30
+
+
+state 22
+
+   34 tipos: NUMERICO .
+
+    $default  reduce using rule 34 (tipos)
+
+
+state 23
+
+   35 tipos: NUMERICODECIMAL .
+
+    $default  reduce using rule 35 (tipos)
+
+
+state 24
+
+   38 tipos: CADENA .
+
+    $default  reduce using rule 38 (tipos)
+
+
+state 25
+
+   33 tipos: IDENTIFICADOR .
+
+    $default  reduce using rule 33 (tipos)
+
+
+state 26
+
+   11 condicional_si: SI APERTURAPARENTESIS condiciones . CIERREPARENTESIS sentencias FIN
+   12               | SI APERTURAPARENTESIS condiciones . CIERREPARENTESIS sentencias SINO sentencias FIN
+   13               | SI APERTURAPARENTESIS condiciones . CIERREPARENTESIS sentencias osi_encadenados FIN
+   17 condiciones: condiciones . YLOGICO relacionales
+   18            | condiciones . OLOGICO relacionales
+
+    YLOGICO           shift, and go to state 40
+    OLOGICO           shift, and go to state 41
+    CIERREPARENTESIS  shift, and go to state 42
+
+
+state 27
+
+   20 condiciones: relacionales .
+
+    $default  reduce using rule 20 (condiciones)
+
+
+state 28
+
+   21 relacionales: expresion . MAYORQUE expresion
+   22             | expresion . MAYORIGUALQUE expresion
+   23             | expresion . MENORQUE expresion
+   24             | expresion . MENORIGUALQUE expresion
+   25             | expresion . IGUALQUE expresion
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+
+    SUMA           shift, and go to state 43
+    RESTA          shift, and go to state 44
+    MAYORQUE       shift, and go to state 45
+    MENORQUE       shift, and go to state 46
+    MAYORIGUALQUE  shift, and go to state 47
+    MENORIGUALQUE  shift, and go to state 48
+    IGUALQUE       shift, and go to state 49
+
+
+state 29
+
+   29 expresion: operacion .
+   30 operacion: operacion . MULTIPLICACION tipos
+   31          | operacion . DIVISION tipos
+
+    MULTIPLICACION  shift, and go to state 50
+    DIVISION        shift, and go to state 51
+
+    $default  reduce using rule 29 (expresion)
+
+
+state 30
+
+   32 operacion: tipos .
+
+    $default  reduce using rule 32 (operacion)
+
+
+state 31
+
+   10 bucle_mientras: MIENTRAS APERTURAPARENTESIS condiciones . CIERREPARENTESIS sentencias FIN
+   17 condiciones: condiciones . YLOGICO relacionales
+   18            | condiciones . OLOGICO relacionales
+
+    YLOGICO           shift, and go to state 40
+    OLOGICO           shift, and go to state 41
+    CIERREPARENTESIS  shift, and go to state 52
+
+
+state 32
+
+   39 tipos: APERTURAPARENTESIS . expresion CIERREPARENTESIS
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    expresion  go to state 53
+    operacion  go to state 29
+    tipos      go to state 30
+
+
+state 33
+
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+   40 imprimir: IMPRIMIR APERTURAPARENTESIS expresion . CIERREPARENTESIS
+
+    SUMA              shift, and go to state 43
+    RESTA             shift, and go to state 44
+    CIERREPARENTESIS  shift, and go to state 54
+
+
+state 34
+
+    9 asignacion: IDENTIFICADOR IGUAL expresion .
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+
+    SUMA   shift, and go to state 43
+    RESTA  shift, and go to state 44
+
+    $default  reduce using rule 9 (asignacion)
+
+
+state 35
+
+   36 tipos: RESTA NUMERICO .
+
+    $default  reduce using rule 36 (tipos)
+
+
+state 36
+
+   37 tipos: RESTA NUMERICODECIMAL .
+
+    $default  reduce using rule 37 (tipos)
+
+
+state 37
+
+   19 condiciones: NOLOGICO relacionales .
+
+    $default  reduce using rule 19 (condiciones)
+
+
+state 38
+
+   26 relacionales: APERTURAPARENTESIS relacionales . CIERREPARENTESIS
+
+    CIERREPARENTESIS  shift, and go to state 55
+
+
+state 39
+
+   21 relacionales: expresion . MAYORQUE expresion
+   22             | expresion . MAYORIGUALQUE expresion
+   23             | expresion . MENORQUE expresion
+   24             | expresion . MENORIGUALQUE expresion
+   25             | expresion . IGUALQUE expresion
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+   39 tipos: APERTURAPARENTESIS expresion . CIERREPARENTESIS
+
+    SUMA              shift, and go to state 43
+    RESTA             shift, and go to state 44
+    MAYORQUE          shift, and go to state 45
+    MENORQUE          shift, and go to state 46
+    MAYORIGUALQUE     shift, and go to state 47
+    MENORIGUALQUE     shift, and go to state 48
+    IGUALQUE          shift, and go to state 49
+    CIERREPARENTESIS  shift, and go to state 56
+
+
+state 40
+
+   17 condiciones: condiciones YLOGICO . relacionales
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 21
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    relacionales  go to state 57
+    expresion     go to state 28
+    operacion     go to state 29
+    tipos         go to state 30
+
+
+state 41
+
+   18 condiciones: condiciones OLOGICO . relacionales
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 21
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    relacionales  go to state 58
+    expresion     go to state 28
+    operacion     go to state 29
+    tipos         go to state 30
+
+
+state 42
+
+   11 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS . sentencias FIN
+   12               | SI APERTURAPARENTESIS condiciones CIERREPARENTESIS . sentencias SINO sentencias FIN
+   13               | SI APERTURAPARENTESIS condiciones CIERREPARENTESIS . sentencias osi_encadenados FIN
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    sentencias      go to state 59
+    sentencia       go to state 8
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12
+
+
+state 43
+
+   27 expresion: expresion SUMA . operacion
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    operacion  go to state 60
+    tipos      go to state 30
+
+
+state 44
+
+   28 expresion: expresion RESTA . operacion
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    operacion  go to state 61
+    tipos      go to state 30
+
+
+state 45
+
+   21 relacionales: expresion MAYORQUE . expresion
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    expresion  go to state 62
+    operacion  go to state 29
+    tipos      go to state 30
+
+
+state 46
+
+   23 relacionales: expresion MENORQUE . expresion
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    expresion  go to state 63
+    operacion  go to state 29
+    tipos      go to state 30
+
+
+state 47
+
+   22 relacionales: expresion MAYORIGUALQUE . expresion
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    expresion  go to state 64
+    operacion  go to state 29
+    tipos      go to state 30
+
+
+state 48
+
+   24 relacionales: expresion MENORIGUALQUE . expresion
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    expresion  go to state 65
+    operacion  go to state 29
+    tipos      go to state 30
+
+
+state 49
+
+   25 relacionales: expresion IGUALQUE . expresion
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    expresion  go to state 66
+    operacion  go to state 29
+    tipos      go to state 30
+
+
+state 50
+
+   30 operacion: operacion MULTIPLICACION . tipos
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    tipos  go to state 67
+
+
+state 51
+
+   31 operacion: operacion DIVISION . tipos
+
+    RESTA               shift, and go to state 19
+    APERTURAPARENTESIS  shift, and go to state 32
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    tipos  go to state 68
+
+
+state 52
+
+   10 bucle_mientras: MIENTRAS APERTURAPARENTESIS condiciones CIERREPARENTESIS . sentencias FIN
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    sentencias      go to state 69
+    sentencia       go to state 8
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12
+
+
+state 53
+
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+   39 tipos: APERTURAPARENTESIS expresion . CIERREPARENTESIS
+
+    SUMA              shift, and go to state 43
+    RESTA             shift, and go to state 44
+    CIERREPARENTESIS  shift, and go to state 56
+
+
+state 54
+
+   40 imprimir: IMPRIMIR APERTURAPARENTESIS expresion CIERREPARENTESIS .
+
+    $default  reduce using rule 40 (imprimir)
+
+
+state 55
+
+   26 relacionales: APERTURAPARENTESIS relacionales CIERREPARENTESIS .
+
+    $default  reduce using rule 26 (relacionales)
+
+
+state 56
+
+   39 tipos: APERTURAPARENTESIS expresion CIERREPARENTESIS .
+
+    $default  reduce using rule 39 (tipos)
+
+
+state 57
+
+   17 condiciones: condiciones YLOGICO relacionales .
+
+    $default  reduce using rule 17 (condiciones)
+
+
+state 58
+
+   18 condiciones: condiciones OLOGICO relacionales .
+
+    $default  reduce using rule 18 (condiciones)
+
+
+state 59
+
+    3 sentencias: sentencias . sentencia
+   11 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias . FIN
+   12               | SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias . SINO sentencias FIN
+   13               | SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias . osi_encadenados FIN
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    OSI            shift, and go to state 70
+    SINO           shift, and go to state 71
+    MIENTRAS       shift, and go to state 3
+    FIN            shift, and go to state 72
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    sentencia        go to state 18
+    asignacion       go to state 9
+    bucle_mientras   go to state 10
+    condicional_si   go to state 11
+    condicional_osi  go to state 73
+    osi_encadenados  go to state 74
+    imprimir         go to state 12
+
+
+state 60
+
+   27 expresion: expresion SUMA operacion .
+   30 operacion: operacion . MULTIPLICACION tipos
+   31          | operacion . DIVISION tipos
+
+    MULTIPLICACION  shift, and go to state 50
+    DIVISION        shift, and go to state 51
+
+    $default  reduce using rule 27 (expresion)
+
+
+state 61
+
+   28 expresion: expresion RESTA operacion .
+   30 operacion: operacion . MULTIPLICACION tipos
+   31          | operacion . DIVISION tipos
+
+    MULTIPLICACION  shift, and go to state 50
+    DIVISION        shift, and go to state 51
+
+    $default  reduce using rule 28 (expresion)
+
+
+state 62
+
+   21 relacionales: expresion MAYORQUE expresion .
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+
+    SUMA   shift, and go to state 43
+    RESTA  shift, and go to state 44
+
+    $default  reduce using rule 21 (relacionales)
+
+
+state 63
+
+   23 relacionales: expresion MENORQUE expresion .
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+
+    SUMA   shift, and go to state 43
+    RESTA  shift, and go to state 44
+
+    $default  reduce using rule 23 (relacionales)
+
+
+state 64
+
+   22 relacionales: expresion MAYORIGUALQUE expresion .
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+
+    SUMA   shift, and go to state 43
+    RESTA  shift, and go to state 44
+
+    $default  reduce using rule 22 (relacionales)
+
+
+state 65
+
+   24 relacionales: expresion MENORIGUALQUE expresion .
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+
+    SUMA   shift, and go to state 43
+    RESTA  shift, and go to state 44
+
+    $default  reduce using rule 24 (relacionales)
+
+
+state 66
+
+   25 relacionales: expresion IGUALQUE expresion .
+   27 expresion: expresion . SUMA operacion
+   28          | expresion . RESTA operacion
+
+    SUMA   shift, and go to state 43
+    RESTA  shift, and go to state 44
+
+    $default  reduce using rule 25 (relacionales)
+
+
+state 67
+
+   30 operacion: operacion MULTIPLICACION tipos .
+
+    $default  reduce using rule 30 (operacion)
+
+
+state 68
+
+   31 operacion: operacion DIVISION tipos .
+
+    $default  reduce using rule 31 (operacion)
+
+
+state 69
+
+    3 sentencias: sentencias . sentencia
+   10 bucle_mientras: MIENTRAS APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias . FIN
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    FIN            shift, and go to state 75
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    sentencia       go to state 18
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12
+
+
+state 70
+
+   14 condicional_osi: OSI . APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias
+
+    APERTURAPARENTESIS  shift, and go to state 76
+
+
+state 71
+
+   12 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias SINO . sentencias FIN
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    sentencias      go to state 77
+    sentencia       go to state 8
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12
+
+
+state 72
+
+   11 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias FIN .
+
+    $default  reduce using rule 11 (condicional_si)
+
+
+state 73
+
+   15 osi_encadenados: condicional_osi .
+
+    $default  reduce using rule 15 (osi_encadenados)
+
+
+state 74
+
+   13 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias osi_encadenados . FIN
+   16 osi_encadenados: osi_encadenados . condicional_osi
+
+    OSI  shift, and go to state 70
+    FIN  shift, and go to state 78
+
+    condicional_osi  go to state 79
+
+
+state 75
+
+   10 bucle_mientras: MIENTRAS APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias FIN .
+
+    $default  reduce using rule 10 (bucle_mientras)
+
+
+state 76
+
+   14 condicional_osi: OSI APERTURAPARENTESIS . condiciones CIERREPARENTESIS sentencias
+
+    RESTA               shift, and go to state 19
+    NOLOGICO            shift, and go to state 20
+    APERTURAPARENTESIS  shift, and go to state 21
+    NUMERICO            shift, and go to state 22
+    NUMERICODECIMAL     shift, and go to state 23
+    CADENA              shift, and go to state 24
+    IDENTIFICADOR       shift, and go to state 25
+
+    condiciones   go to state 80
+    relacionales  go to state 27
+    expresion     go to state 28
+    operacion     go to state 29
+    tipos         go to state 30
+
+
+state 77
+
+    3 sentencias: sentencias . sentencia
+   12 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias SINO sentencias . FIN
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    FIN            shift, and go to state 81
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    sentencia       go to state 18
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12
+
+
+state 78
+
+   13 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias osi_encadenados FIN .
+
+    $default  reduce using rule 13 (condicional_si)
+
+
+state 79
+
+   16 osi_encadenados: osi_encadenados condicional_osi .
+
+    $default  reduce using rule 16 (osi_encadenados)
+
+
+state 80
+
+   14 condicional_osi: OSI APERTURAPARENTESIS condiciones . CIERREPARENTESIS sentencias
+   17 condiciones: condiciones . YLOGICO relacionales
+   18            | condiciones . OLOGICO relacionales
+
+    YLOGICO           shift, and go to state 40
+    OLOGICO           shift, and go to state 41
+    CIERREPARENTESIS  shift, and go to state 82
+
+
+state 81
+
+   12 condicional_si: SI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias SINO sentencias FIN .
+
+    $default  reduce using rule 12 (condicional_si)
+
+
+state 82
+
+   14 condicional_osi: OSI APERTURAPARENTESIS condiciones CIERREPARENTESIS . sentencias
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    sentencias      go to state 83
+    sentencia       go to state 8
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12
+
+
+state 83
+
+    3 sentencias: sentencias . sentencia
+   14 condicional_osi: OSI APERTURAPARENTESIS condiciones CIERREPARENTESIS sentencias .
+
+    COMENTARIO     shift, and go to state 1
+    SI             shift, and go to state 2
+    MIENTRAS       shift, and go to state 3
+    IMPRIMIR       shift, and go to state 4
+    IDENTIFICADOR  shift, and go to state 5
+
+    $default  reduce using rule 14 (condicional_osi)
+
+    sentencia       go to state 18
+    asignacion      go to state 9
+    bucle_mientras  go to state 10
+    condicional_si  go to state 11
+    imprimir        go to state 12

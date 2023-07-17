@@ -1,0 +1,14 @@
+#Operaciones aritmeticas
+
+#Aritmeticas sencillo
+resta = 3 - 4
+imprimir(resta) #-1
+
+divi = 10 * 0.5
+imprimir(divi) //5
+
+#Aritmeticas complejo
+var0= 0.5
+var10     = 10
+_varI = 10 + var10 / var0
+imprimir(_varI) //30
